@@ -11,8 +11,8 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /**
-       
-       * Mechanism: Passing a children argms to constructor: ListView(children:[]) | Load(Render) all (in)visible
+       * Mechanism: Passing a children argms to constructor: ListView(children:[]) 
+       * | Load(Render) all (in)visible
        */
     return ListView(
       children: transactions.map((tx) {

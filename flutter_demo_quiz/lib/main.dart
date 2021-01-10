@@ -6,30 +6,35 @@ import './result.dart';
 //   runApp(MyApp());
 // }
 
+//* Common denominator */
 void main() => runApp(MyApp());
 
-// InputData (ExternalDate) is received via constructor of a Widget and make Widget Stateful/Stateless is rebuilt if that changes
-// But only StatefulWidgets can have class properties where they can update values + re-run build().
+// Input (also External_Data) is received via Widget_Constructor
+// -> Stateful/Stateless is rebuilt if that changes
+// But only StatefulWidgets can have class properties where they can update values + re-run build()
+
 class MyApp extends StatefulWidget {
-  // createState returns State Object which is connected to StatefulWidget (Pointer inside <>)
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MyAppState();
-  }
+  State<StatefulWidget> createState() => _MyAppState(); // returned StateObj
 }
 
+// ignore: slash_for_doc_comments
 /**
- * State is imported from material.dart | 
- * - Also is generic class so we can add Pointer of its Widget inside" < > " to create connection, which tell this is its InternalState (1)
- * Basically Widget itself can recreated when the external data changes BUT State, attached to its Widget-element in UI, technically not recreated
- */
-// Note: Manage internal data in StatefulWidget - actually is in State Object which connected to StatefulWidget
-// ---(can do it in other Dart class or StatelessWidget afterall - but only with Stateful can update the data reflected to UI)
-// ---> That is why in StatelessWidget if there is property it will warning that class is immutable but property can change so give it "final" keyword
-//----> So final tell value of property never change after its initialization in constructor
-
+   * Generic class State<> (material.dart) has Pointer of its Widget
+   * -> create connection, which tell this is its Internal_State (1)
+   * Input changed -> Widget re-created
+   * >< State, attached to its Widget-element in UI, "technically" not re-created
+   */
 class _MyAppState extends State<MyApp> {
+// ignore: slash_for_doc_comments
+/**
+ * Manipulate InternalData in State_Object == in StatefulWidget (connected)
+ * BUT it can update the data reflected to UI <> other Dart class || Stateless
+ * There is property in Stateless -> warning @immutable
+ * -> final: tell value of property never change after its initialization in constructor
+ * However property can change after all !
+ */
+//// final: runtime constant <> const: compile time constant
   final _questions = const [
     {
       'questionText': 'What\'s your favorite color?',
@@ -59,6 +64,7 @@ class _MyAppState extends State<MyApp> {
       ],
     },
   ];
+
   var _questionIndex = 0;
   var _totalScore = 0;
 
@@ -70,21 +76,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
-    // var aBool = true;
-    // aBool = false;
-
     _totalScore += score;
 
     /**
-     * Since Flutter is good at not taking every tap on screen as an indicator to re-render everything.
-     * - We tell flutter state changed and re-render this widget by call build() of its BUT efficiently it has mechanism to find out what need to redrawn
-     * => Wrap code change the internal data which reflected UI (Like questionIndex control which question show)
-     * setState is method of inherit State class
+     * Flutter is good at not taking every tap on screen as an indicator to re-render everything.
+     * - We tell Flutter state changed and re-render this widget by call build() of its 
+     * BUT efficiently it has mechanism to find out what need to redrawn
+     *** -> Wrap the code change the internal data which reflected UI 
+     * Ex: _questionIndex control which question show)
      */
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
-    print(_questionIndex);
 
     if (_questionIndex < _questions.length) {
       print('We have more questions!');
@@ -96,9 +99,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     // var dummy = const ['Hello'];
-    // dummy.add('Max');
-    // print(dummy);
-    // dummy = [];
+    // dummy.add('Max'); //Error when compling because change value to const (comile time constant)
+
+    // dummy = []; //But this will allow
     // questions = []; // does not work if questions is a const
 
     return MaterialApp(

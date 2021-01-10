@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/transaction.dart';
 import './new_transaction.dart';
-import './transaction_list.dart';
+import 'transaction_list (Card_custom).dart';
 
 class UserTransactions extends StatefulWidget {
   @override
@@ -10,8 +10,6 @@ class UserTransactions extends StatefulWidget {
 }
 
 class _UserTransactionsState extends State<UserTransactions> {
-  // NOTE: the _userTransactions is holding pointer of List => _userTransactions = .. is Wrong
-  //=> _userTransactions.add(value)
   final List<Transaction> _userTransactions = [
     Transaction(
       id: 't1',
@@ -26,17 +24,13 @@ class _UserTransactionsState extends State<UserTransactions> {
       date: DateTime.now(),
     ),
   ];
-  /**
-   * Although this method is private but it just a Pointer so pass it down to Widget
-   * and the create the Constructor in destination
-   */
-  // Note: txAmount expect double rather than String
+
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
       date: DateTime.now(),
-      id:DateTime.now().toString(),
+      id: DateTime.now().toString(),
     );
     setState(() {
       _userTransactions.add(newTx);
@@ -47,8 +41,15 @@ class _UserTransactionsState extends State<UserTransactions> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        /** 
+         * _addNewTransaction is private BUT passing here is a pointer 
+         * Note 1: NewTransaction at first is defined as Stateless Widget
+         * => after triggerd by onPressed: submitData by addTx() not re-render!
+         * => BUT... (read in new_transaction.dart)
+         * <> TransactionList() re-render because changing in _userTransactions
+         */
         NewTransaction(_addNewTransaction),
-        TransactionList(_userTransactions),
+        TransactionList(_userTransactions), //Execute by _addNewTransaction()
       ],
     );
   }

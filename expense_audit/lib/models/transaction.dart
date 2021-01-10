@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 /// Blueprint of Dart Object
 
-
 class Transaction {
   final String
       id; //runtime constant | Get when created but after that never changes
@@ -10,6 +9,7 @@ class Transaction {
   final double amount;
   // DateTime is type base on predefined class | It is not primitive
   DateTime date;
+  /** @required is from 'package:flutter/foundation.dart' */
   Transaction({
     @required this.id,
     @required this.title,

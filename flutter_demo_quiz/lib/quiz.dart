@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import './question.dart';
 import './answer.dart';
+
 /**
  * Quiz is the common denominator (Parent of Question + Answer Widget)
  */
 class Quiz extends StatelessWidget {
-  final List<Map<String, Object>> questions;
-  final int questionIndex;
   final Function answerQuestion;
+  final int questionIndex;
+  final List<Map<String, Object>> questions;
 
   Quiz({
     @required this.questions,
@@ -22,16 +23,23 @@ class Quiz extends StatelessWidget {
       children: [
         // Below is create concrete instance of Question
         Question(
-          questions[questionIndex]['questionText'],
+          questions[questionIndex]['questionText'], //access specific key of Map
         ),
-        // question is List => Class | Object => Class defines a map method
+        // question is List which is Class|Obj => it defines map()
+        // to executes function on every elements of list
         /**
          * Purpose: Instead have list of maps, we transform into list of widget
-         * map returns Interable => .toList() - tell Dart convert value to list
+         * map() returns Interable => Use .toList() 
+         * -> tell Dart convert to list because Column() Widget receives list
+         * 
          * Note1: map generate new list
-         * Note2: Define as because Dart does not know answer key hold the list
+         * Note2: Define as because Dart does not know ['answer'] hold the list
+         * Note3: Without spread operator (3 dots)  
+         *  Column() only get List of invidual item not List (Answer())
          */
-        ...(questions[questionIndex]['answers'] as List<Map<String, Object>>).map((answer) {
+        ...(questions[questionIndex]['answers'] as List<Map<String, Object>>)
+            .map((answer) {
+          //answer is map object
           // Passing function (Address) is known as "callback" - Forward the Pointer as the funcion to Answer Widget
           return Answer(() => answerQuestion(answer['score']), answer['text']);
         }).toList()
