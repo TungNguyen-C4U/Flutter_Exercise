@@ -21,21 +21,27 @@ class Quiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Below is create concrete instance of Question
+        /// Below is create concrete_instance of Question
+        /// Note: concrete_instance: instance which implement all attributes
         Question(
           questions[questionIndex]['questionText'], //access specific key of Map
         ),
-        // question is List which is Class|Obj => it defines map()
-        // to executes function on every elements of list
+        /// questions is a List, which is then also a Class|Obj => it defines map()
+        /// Note: map(): executes a function on every elements of its List
+
         /**
-         * Purpose: Instead have list of maps, we transform into list of widget
-         * map() returns Interable => Use .toList() 
-         * -> tell Dart convert to list because Column() Widget receives list
+         * Purpose: Instead have <list_of_maps>, we transform into <list_of_widgets>
          * 
+         * Note1: map() returns Iterable >.toList() to convert (Widget_Column not receive Iterable)
+         * Note2: [https://api.flutter.dev/flutter/dart-core/Iterable-class.html]
+         * ----Iterable is a collection of values | elements, that can be accessed sequentially
+         * 
+         
          * Note1: map generate new list
-         * Note2: Define as because Dart does not know ['answer'] hold the list
-         * Note3: Without spread operator (3 dots)  
-         *  Column() only get List of invidual item not List (Answer())
+         * Note2: Define [as] because Dart does not know ['answer'] hold the list
+         * Note3: Column() only get List of invidual item not List of Widget_List[Answer()s]
+         * > Use spread operator (3 dots)
+         *  
          */
         ...(questions[questionIndex]['answers'] as List<Map<String, Object>>)
             .map((answer) {
