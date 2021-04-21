@@ -1,16 +1,28 @@
-# flutter_demo_quiz
+# flutter_quiz
+## Overview
 
-A new Flutter project.
+This project is using demo for some technics which list below.
 
-## Getting Started
+## Learning Obects
+- Stateless_Widget and Stateful_Widget.
+> Only properties in StatefulWidget can updated after re-build.
+> Also update the data in StatefulWidget can reflect to UI.
+> warning @immutable if there is non-final variable in Stateless Class.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+- Enum and Constructor Variants.
+> Define multiple constructors by using dot notation technique.
+> Note that in Java, using different signature to create constructor variants.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- map(), Iterable, Spread operator, Callback technique.
+```sh
+(questions[questionIndex]['answers'] as List<Map<String, Object>>)
+    .map((answer) {
+  return Answer(() => answerQuestion(answer['score']), answer['text']);
+}).toList()
+```
+> map() returns Iterable >.toList() to convert (Widget_Column not receive Iterable).
+> Iterable is a collection of values | elements, that can be accessed sequentially.
+> Define [as] because Dart does not know ['answer'] hold the list
+> Passing Address() is known as [Callback]
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
