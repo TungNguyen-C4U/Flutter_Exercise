@@ -5,22 +5,24 @@ class Answer extends StatelessWidget {
   final Function selectHandler;
   final String answerText;
 
-  Answer(this.selectHandler, this.answerText);
+  Answer(
+    this.selectHandler,
+    this.answerText,
+  );
 
   @override
   Widget build(BuildContext context) {
-    // Container allows control the width
+    /**
+     * Use 'Container_Widget' allows control the width
+     * 'onPressed' takes (register) func for an event but not mean it has to be StatefulW.
+     * Because it can trigger func even if this func in other Widget
+     *  */
     return Container(
       width: double.infinity,
       child: RaisedButton(
-        // static const Color black = Color(0xFF000000);
-        // -Get easy access to value without creating instance
-        // -Color is predifined group | Just exist as a grouping mechanism around prconfigured values.
         color: Colors.blue,
         textColor: Colors.white,
         child: Text(answerText),
-        // Register function here for an event not mean it has to be StatefulW.
-        // Cuz can trigger function even if this function in other widget
         onPressed: selectHandler,
       ),
     );
