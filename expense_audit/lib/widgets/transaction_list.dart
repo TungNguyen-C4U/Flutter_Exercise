@@ -2,6 +2,18 @@ import 'package:expense_audit/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 
+/** WHY DON'T USE StatefulWidget HERE **
+ * [Chapter86] First using StatefuleW here because TransactionList is changing
+ * Because:  
+ * + "Assign" TransactionList to StatefulW UserTransaction which show it there
+ * + _userTransactions=[] moving on user_transaction.dart to manage it there
+ * + Also  
+ * => Rollback to StatelessW 
+ 
+ * FIRST VERSION OF LIST TRANSACTION (see ver1.0)
+ * Using _userTransactions.map((tx) {return Card(<custom_build>)}).toList()
+ */
+/// ***
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function deleteTx;

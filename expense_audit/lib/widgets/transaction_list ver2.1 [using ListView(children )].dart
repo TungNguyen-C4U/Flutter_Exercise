@@ -10,11 +10,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /**
-       * Note 1: Styling in Flutter == Working argms | argm of the it's wrapper
-       * Note 2: Without anything else, Container sizes itself to its child
-       */
-    return Column(
+    return ListView(
       children: transactions.map((tx) {
         return Card(
           child: Row(
@@ -24,13 +20,13 @@ class TransactionList extends StatelessWidget {
                   vertical: 10,
                   horizontal: 15,
                 ),
-                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.purple,
                     width: 2,
                   ),
                 ),
+                padding: EdgeInsets.all(10),
                 child: Text(
                   '\$${tx.amount}',
                   style: TextStyle(

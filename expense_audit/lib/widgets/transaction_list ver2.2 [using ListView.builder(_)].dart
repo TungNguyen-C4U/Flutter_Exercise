@@ -10,16 +10,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /**
-     * Wrap into ScrollFrame by set Container with height + SingleChildScrollView Widget
-     * Note1: Without Scroll Widget in main, Yellow Error Banner still appear on softkeyboard
-     * Note2: Row and Column by default is not scrollable
-     */
-
-    /**
-     * ListView Widget has infinitive height <> Column's height == given screen
-     * Basically, ListView = Column + SingleChildscrollview 
-     * Note: MUST Wrap by Container => define height or throw error
+    /** WHY USING ListView BUT NOT Column COMBINE WITH SingleChildScrollView **
+     * [Chapter 89-90.1]
      */
     return Container(
       height: 300,
@@ -39,28 +31,20 @@ class TransactionList extends StatelessWidget {
                 ),
               ],
             )
+          /**WHAT IS DIFFERENT ListView(children) AND ListView.builder() ** 
+           * [Chapter 90.2]
+           * map(() {}) take list itself <> itemBuilder:() {} take number of items
+           * 
+           * itemBuilder: Provide checkpoint where rendered child Widget
+           * itemCount: How many items should be built
+          */
           : ListView.builder(
-              /**
-         * Note 1: map(() {}) take list itself <> itemBuilder:() {} take number of items
-         * Note 2: (required) itemBuilder take func - called by Flutter 
-         * => call builder() for every new item it wants to render on screen! 
-         * itemBuilder give BuildContext (is metaObj ~ position Widget in Widget tree) 
-         * + index currently building
-         */
               itemBuilder: (ctx, index) {
-                // return the Widget should be built for current item
                 return Card(
                   child: Row(
                     children: <Widget>[
                       Container(
-                        /** Container auto fill all the space when set alignment
-                         * Still can resized by width & height
-                         */
-                        // alignment: Alignment.bottomCenter,
-                        // constraints: BoxConstraints.tightForFinite(width: 200,),
                         margin: const EdgeInsets.symmetric(
-                          /// (default) shape sized to its Child (Text->Rectangle)
-                          // shape: BoxShape.circle,
                           vertical: 10,
                           horizontal: 15,
                         ),
@@ -102,7 +86,6 @@ class TransactionList extends StatelessWidget {
                   ),
                 );
               },
-              // How many items should be built
               itemCount: transactions.length,
             ),
     );

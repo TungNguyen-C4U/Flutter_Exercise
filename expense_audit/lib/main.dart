@@ -19,6 +19,7 @@ void main() {
   runApp(MyApp());
 }
 
+/// Keep MyApp to StatelessWiget to make sure AppBar not rebuild ///
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -62,24 +63,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   bool _showChart = false;
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    super.initState();
-  }
-
-  ///
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
   final List<Transaction> _userTransactions = [
     Transaction(
       id: 't1',
@@ -95,9 +78,25 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     ),
   ];
 
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   List<Transaction> get _recentTransactions {
     // function returns true -> item is kept into newly returned list
-    // Note: where() return Iterable not List
     return _userTransactions.where((tx) {
       return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
@@ -125,16 +124,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void _startAddNewTransaction(BuildContext ctx) {
-    // showModalBottomSheet(
-    //     context: ctx,
-    //     builder: (_) {
-    //       return GestureDetector(
-    //         onTap: () {}, // Do nothing, avoid sheet closed
-    //         child: NewTransaction(_addNewTransaction),
-    //         behavior: HitTestBehavior.opaque,
-    //       );
-    //     });
-
     /// Can get rid of SingleScrollView in new_transaction.dart
     showModalBottomSheet(
         context: ctx,
@@ -260,29 +249,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final pageBody = SafeArea(
       child: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           // NOTE: weight take infinity => crossAxis not apply
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            /**
-             * Container is universal styling (How sth styled, sized, aligned)
-             * Card assumes the size of its child
-             * - Parent is Container => Card takes it as a measurement
-             * => crossAxisAligment.strech
-             * TextWidget takes as much space as Text needs
-             */
-
-            // Container(
-            //   width: double.infinity,
-            //   child: Card(
-            //     elevation: 5,
-            //     color: Colors.blue,
-            //     child: Container(
-            //       width: double.infinity,
-            //       child: Text('CHART!'),
-            //     ),
-            //   ),
-            // ),
             if (isLandscape) ..._buildLandscapeContent(appBar, txListWidget),
             if (!isLandscape) ..._buildPortraitContent(appBar, txListWidget),
             // UserTransactions()
@@ -290,6 +259,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         ),
       ),
     );
+
     return Platform.isIOS
         ? CupertinoPageScaffold(
             child: pageBody,

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // ignore: slash_for_doc_comments
-/** 
- * Widgets is being re-evaluated from time to time
- * (Stateless) internally stored data is reset 
+/** BASE ON Chapter 85 USING StatelessWidget BUT **
+ * Widgets is being re-evaluated from time to time 
+ * (Stateless) internally_stored_data is reset [Techinically we can save the changes (keystroke in this case) in variable but it will not reflected to screen]
  * => Can not store in TextField when tap in other ones
  * (Stateful) have separate state object - State class
  * => detach when being re-evaluated
@@ -35,17 +35,19 @@ class _NewTransactionState extends State<NewTransaction> {
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
       return; // Stop the execution
     }
-    /** addTx() actually is a Pointer
+    /** WHAT IS addTx() **
+     * addTx() actually is a Pointer
      * After wraped with new input - from controller of the TextField
      * => Trigger setState() in user_transaction.dart || main.dart
+     * widget: give access to method/property from Widget_class in State_class
+     * pop():  auto close bottom sheet when finish
      */
-    // widget: give access to method/property from Widget_class in State_class
     widget.addTx(
       enteredTitle,
       enteredAmount,
       _selectedDate,
     );
-    Navigator.of(context).pop(); // auto close bottom sheet when finish
+    Navigator.of(context).pop();
   }
 
   void _presentDatePicker() {
@@ -78,6 +80,7 @@ class _NewTransactionState extends State<NewTransaction> {
    * => Stateless warning @immutable
    * => TextEditingController()
    */
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -93,6 +96,11 @@ class _NewTransactionState extends State<NewTransaction> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
+            /** CAUTION onSubmitted [TEXTFIELD] AND onPressed [FLATBUTTON] ** 
+             * onSubmitted: press 'Done' button == submit 
+             * [Chapter 91]
+             * Convention "_": Not have to define argm
+             */
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(labelText: 'Title'),
@@ -102,17 +110,7 @@ class _NewTransactionState extends State<NewTransaction> {
               TextField(
                 decoration: InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
-                /**IOS: TextInputType.numbeWithOptions(decimal:true) */
                 keyboardType: TextInputType.number, //<static property>
-
-                /**
-                 * Purpose onSubmitted: press done button = submit
-                 * Note: Because onSubmitted require function(String)
-                 * => Can not using Pointer here
-                 * Also not really using that argm String here
-                 * => To not have to define argm up here using convention "_"
-                 * => No need provide argm : () => submitData('Dummy') ???
-                 */
                 onSubmitted: (_) => _submitData(),
               ),
               Container(
@@ -130,18 +128,12 @@ class _NewTransactionState extends State<NewTransaction> {
                   ],
                 ),
               ),
-              // FlatButton(
-              //   child: Text('Add Transaction'),
-              //   textColor: Colors.purple,
-              //   onPressed: _submitData,
-              //   // onPressed: () => addTx(___,___,), /// simple approach
-              // ),
               RaisedButton(
                 child: Text('Add Transaction'),
                 color: Theme.of(context).primaryColor,
                 textColor: Theme.of(context).textTheme.button.color,
                 onPressed: _submitData,
-                // onPressed: () => addTx(___,___,),
+                // onPressed: () => addTx(___,___,), /// simple approach
               ),
             ],
           ),

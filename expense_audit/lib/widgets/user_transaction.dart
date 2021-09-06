@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/transaction.dart';
 import './new_transaction.dart';
-import 'transaction_list (Card_custom).dart';
+import 'transaction_list ver2.2 [using ListView.builder(_)].dart';
 
 class UserTransactions extends StatefulWidget {
   @override
@@ -10,6 +10,12 @@ class UserTransactions extends StatefulWidget {
 }
 
 class _UserTransactionsState extends State<UserTransactions> {
+  /** WHY USING final IN STATEFULWIDGET **
+   * _userTransactions is a Pointer which itself is final
+   * That's why we can assign value to Pointer 
+   * Otherwise we can manipulate with the its object by add( )
+   */
+  ///
   final List<Transaction> _userTransactions = [
     Transaction(
       id: 't1',
@@ -41,10 +47,10 @@ class _UserTransactionsState extends State<UserTransactions> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        /** 
-         * _addNewTransaction is private BUT passing here is a pointer 
-         * Note 1: NewTransaction at first is defined as Stateless Widget
-         * => after triggerd by onPressed: submitData by addTx() not re-render!
+        /** [Chapter88] HOW WE CAN CALL PRIVATE _addNewTransaction( ) IN OTHER CLASS **
+         * _addNewTransaction is private BUT passing here is a pointer
+          
+         * => after triggerd by onPressed: _submitData by addTx() not re-render!
          * => BUT... (read in new_transaction.dart)
          * <> TransactionList() re-render because changing in _userTransactions
          */
