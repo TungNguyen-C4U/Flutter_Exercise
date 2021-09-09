@@ -4,6 +4,7 @@ class ChartBar extends StatelessWidget {
   final String label;
   final double spendingAmount;
   final double spendingPctOfTotal;
+
   const ChartBar(this.label, this.spendingAmount, this.spendingPctOfTotal);
 
   @override
@@ -35,7 +36,7 @@ class ChartBar extends StatelessWidget {
                     ),
                   ),
                   FractionallySizedBox(
-                    heightFactor: spendingPctOfTotal,
+                    heightFactor: spendingPctOfTotal, //0-1 == 0% - 100%
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,

@@ -26,12 +26,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter App',
       theme: ThemeData(
-        //more shades of single color
-        //some default Widget not support single but other shape of it
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
         errorColor: Colors.red,
         fontFamily: 'Quicksand',
+
+        ///DISTINGUISH textTheme FOR GLOBAL AND FOR ONLY appBarTheme///
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
                 fontFamily: 'OpenSans',
@@ -54,6 +54,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/** REASON WHY CHANGE MyHomePage FROM STATELESS TO STATEFUL **
+ * Before [Chaper 93]:
+ * + addTransaction logic is staying on user_transaction.dart
+ * + _userTransactions=[] is staying there too (Also class TransactionList())
+
+ * Implement AppBar & Floating Action Button (More implicated to Modal Bottom S)
+ * => Need Trigger _addNewTransaction( ) here which trigger setState() inside it
+ * => Replace class UserTransaction() by TransactionList() [which bring 
+ * _userTransactions=[] to main.dart too]
+ * All these thing neet to reflect the UI so have to lift State up!
+ * 
+ * IMPORTANT: Because _MyHomePageState is private Class to change all fuctions 
+ * inside to private too (like _addNewTransaction())
+ */
+///
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -95,41 +110,32 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  List<Transaction> get _recentTransactions {
-    // function returns true -> item is kept into newly returned list
-    return _userTransactions.where((tx) {
-      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
-    }).toList();
-  }
-
-  // ignore: slash_for_doc_comments
-  /**
-   * _addNewTransaction() from user_transaction.dart
-   * BUT need to trigger in showModalBottomSheet() 
-   * => Bring all back here so no need user_transaction.dart
-   * => Also it has setState() => Turn main State to Stateful
-   */
   void _addNewTransaction(
       String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
       date: chosenDate,
-      /**DateTime.now(): Constructor */
-      id: DateTime.now().toString(),
+      id: DateTime.now() //DateTime.now(): Constructor | DateTime: Class//
+          .toString(),
     );
     setState(() {
       _userTransactions.add(newTx);
     });
   }
 
+  /** SOME NOTE ABOUT showModalBottomSheet **
+   * See [mbs folder]:
+   * showModalBottomSheet.Container vs showModalBottomSheet.gestureDetecture
+   * [NOTE]: 
+   * Can get rid of SingleScrollView in new_transaction.dart by using here
+   */
+  ///
   void _startAddNewTransaction(BuildContext ctx) {
-    /// Can get rid of SingleScrollView in new_transaction.dart
     showModalBottomSheet(
         context: ctx,
         isScrollControlled: true,
         builder: (_) {
-          //return NewTransaction(_addNewTransaction);
           return SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.only(
@@ -145,6 +151,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     setState(() {
       _userTransactions.removeWhere((tx) => tx.id == id);
     });
+  }
+
+  List<Transaction> get _recentTransactions {
+    // function returns true -> item is kept into newly returned list
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
   }
 
   List<Widget> _buildLandscapeContent(AppBar appBar, Widget txListWidget) {

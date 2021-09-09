@@ -130,6 +130,63 @@ Returns a Future that resolves to the value (if any) that was passed to Navigato
                 );
               },
             ),
+            // Sheet will close when touch on anything
+            ElevatedButton(
+              child: const Text('showMBS_by Nothing rather than content'),
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const Text('Modal BottomSheet'),
+                          ElevatedButton(
+                            child: const Text('Close BottomSheet'),
+                            onPressed: () => Navigator.pop(context),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+
+            ElevatedButton(
+              child: const Text('showMBS clone from tutorial project'),
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Card(
+                      elevation: 5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          TextField(
+                            decoration: InputDecoration(labelText: 'Title'),
+                            onSubmitted: (_) => {},
+                          ),
+                          TextField(
+                            decoration: InputDecoration(labelText: 'Amount'),
+                            keyboardType: TextInputType.number,
+                            onSubmitted: (_) => {},
+                          ),
+                          RaisedButton(
+                            child: Text('Add Transaction'),
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            )
           ],
         ),
       ),

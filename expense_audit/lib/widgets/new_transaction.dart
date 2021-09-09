@@ -3,14 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-// ignore: slash_for_doc_comments
-/** BASE ON Chapter 85 USING StatelessWidget BUT **
- * Widgets is being re-evaluated from time to time 
- * (Stateless) internally_stored_data is reset [Techinically we can save the changes (keystroke in this case) in variable but it will not reflected to screen]
- * => Can not store in TextField when tap in other ones
- * (Stateful) have separate state object - State class
- * => detach when being re-evaluated
+/** [Chapter 85] USING StatelessWidget BUT LIFT STATE UP IN [Chapter 94] **
+ * See [Chapter 85 + 94] documents...
  */
+///
 class NewTransaction extends StatefulWidget {
   final Function addTx;
 
@@ -40,14 +36,14 @@ class _NewTransactionState extends State<NewTransaction> {
      * After wraped with new input - from controller of the TextField
      * => Trigger setState() in user_transaction.dart || main.dart
      * widget: give access to method/property from Widget_class in State_class
-     * pop():  auto close bottom sheet when finish
+     * 
      */
     widget.addTx(
       enteredTitle,
       enteredAmount,
       _selectedDate,
     );
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(); //Auto close Bottom Sheet when press 'Done'
   }
 
   void _presentDatePicker() {

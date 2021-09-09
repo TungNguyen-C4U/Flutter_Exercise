@@ -4,10 +4,10 @@ import '../models/transaction.dart';
 
 /** WHY DON'T USE StatefulWidget HERE **
  * [Chapter86] First using StatefuleW here because TransactionList is changing
- * Because:  
+ * But when we:  
  * + "Assign" TransactionList to StatefulW UserTransaction which show it there
  * + _userTransactions=[] moving on user_transaction.dart to manage it there
- * + Also  
+ * + Also setState() of fx _addNewTransaction() make it must LIFT STATE UP
  * => Rollback to StatelessW 
  
  * FIRST VERSION OF LIST TRANSACTION (see ver1.0)
@@ -35,8 +35,10 @@ class TransactionList extends StatelessWidget {
                   const SizedBox(height: 10),
                   Container(
                     height: constraints.maxHeight * 0.6,
-                    child: Image.asset('assets/images/waiting.png',
-                        fit: BoxFit.cover),
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover, //[Chapter 97]//
+                    ),
                   ),
                 ],
               );

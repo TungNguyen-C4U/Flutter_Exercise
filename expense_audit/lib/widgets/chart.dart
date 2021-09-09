@@ -4,37 +4,42 @@ import 'package:intl/intl.dart';
 import '../widgets/chart_bar.dart';
 import '../models/transaction.dart';
 
+///See [Chapter 99 - 104] for more information///
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
 
   Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupedTransactionValues {
-    return List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
-      );
-      var totalSum = 0.0;
+    return List.generate(
+      7,
+      (index) {
+        final weekDay = DateTime.now().subtract(Duration(days: index));
+        var totalSum = 0.0;
 
-      for (var i = 0; i < recentTransactions.length; i++) {
-        if (recentTransactions[i].date.day == weekDay.day &&
-            recentTransactions[i].date.month == weekDay.month &&
-            recentTransactions[i].date.year == weekDay.year) {
-          totalSum += recentTransactions[i].amount;
+        for (var i = 0; i < recentTransactions.length; i++) {
+          if (recentTransactions[i].date.day == weekDay.day &&
+              recentTransactions[i].date.month == weekDay.month &&
+              recentTransactions[i].date.year == weekDay.year) {
+            totalSum += recentTransactions[i].amount;
+          }
         }
-      }
-      return {
-        // substring: T rather than Thu
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
-        'amount': totalSum
-      };
-      // reversed returns Iterable | Change order of day S earlier rather than M
-    }).reversed.toList();
+        return {
+          'day': DateFormat.E().format(weekDay).substring(0, 1),
+          'amount': totalSum
+        };
+        // reversed returns Iterable | Change order of day S earlier rather than M
+      },
+    ).reversed.toList();
   }
 
+  /**WHAT IS fold() FUNCTION
+     * fold() change list to another type
+     * + sum: is just a own-named variable hold values after calculation;
+     * + item: element looking at
+     */
+  ///
   double get totalSpending {
-    // fold() change list to another type:
-    // sum-argm curretly calculate; item-element looking at
     return groupedTransactionValues.fold(0.0, (sum, item) {
       return sum + item['amount'];
     });
@@ -50,11 +55,8 @@ class Chart extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactionValues.map((data) {
-            // return Text(data['day'] + ' : ' + data['amount'].toString());
-            // return Text('${data['day']} : ${data['amount']}');
             return Flexible(
-              // For no changing size
-              fit: FlexFit.tight,
+              fit: FlexFit.tight, //[Chapter 104, 105]
               child: ChartBar(
                 data['day'],
                 data['amount'],
