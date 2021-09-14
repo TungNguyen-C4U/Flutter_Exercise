@@ -15,7 +15,7 @@ class ChartBar extends StatelessWidget {
           children: <Widget>[
             // When text is too long it does not cut row
             Container(
-              height: constraint.maxHeight * 0.15,
+              height: constraint.maxHeight * 0.15, //To align all amount numbers
               child: FittedBox(
                 child: Text('\$${spendingAmount.toStringAsFixed(0)}'),
               ),

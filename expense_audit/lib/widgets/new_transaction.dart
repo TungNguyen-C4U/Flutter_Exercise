@@ -31,13 +31,7 @@ class _NewTransactionState extends State<NewTransaction> {
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
       return; // Stop the execution
     }
-    /** WHAT IS addTx() **
-     * addTx() actually is a Pointer
-     * After wraped with new input - from controller of the TextField
-     * => Trigger setState() in user_transaction.dart || main.dart
-     * widget: give access to method/property from Widget_class in State_class
-     * 
-     */
+
     widget.addTx(
       enteredTitle,
       enteredAmount,
@@ -47,16 +41,11 @@ class _NewTransactionState extends State<NewTransaction> {
   }
 
   void _presentDatePicker() {
-    // name_context_argm : class_property_context
-    /**
-     * then() provide func exec when future resolves to a value [choose a date]
-     * Note: func pass inside then store in memory => continue exec code after it
-     */
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
+      firstDate: DateTime(2020), //Can not go back to 2019
+      lastDate: DateTime.now(), //Can go to the future!
     ).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -66,16 +55,6 @@ class _NewTransactionState extends State<NewTransaction> {
       });
     });
   }
-
-  // ignore: slash_for_doc_comments
-  /**Note: 
-   * onChanged: (val) => enteredTitle = val,
-   * Fire every keystroke, 
-   * Require only one String argm => No need to define type 'val' 
-   * <> Can't define enteredTitle final - Changing in runtime
-   * => Stateless warning @immutable
-   * => TextEditingController()
-   */
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +72,12 @@ class _NewTransactionState extends State<NewTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             /** CAUTION onSubmitted [TEXTFIELD] AND onPressed [FLATBUTTON] ** 
-             * onSubmitted: press 'Done' button == submit 
-             * [Chapter 91]
-             * Convention "_": Not have to define argm
+             * See more in [Chapter 91] document
+            
+             * TextField:
+             * + onSubmitted: press 'Done' button == submit 
+             * + onChanged  : fire every keystroke
+             * 
              */
             children: <Widget>[
               TextField(
@@ -110,7 +92,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 onSubmitted: (_) => _submitData(),
               ),
               Container(
-                height: 70,
+                height: 70, //More space between above TextField and this Row
                 child: Row(
                   children: <Widget>[
                     Expanded(

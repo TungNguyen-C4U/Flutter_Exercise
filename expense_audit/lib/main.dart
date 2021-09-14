@@ -58,14 +58,15 @@ class MyApp extends StatelessWidget {
  * Before [Chaper 93]:
  * + addTransaction logic is staying on user_transaction.dart
  * + _userTransactions=[] is staying there too (Also class TransactionList())
-
- * Implement AppBar & Floating Action Button (More implicated to Modal Bottom S)
- * => Need Trigger _addNewTransaction( ) here which trigger setState() inside it
- * => Replace class UserTransaction() by TransactionList() [which bring 
- * _userTransactions=[] to main.dart too]
- * All these thing neet to reflect the UI so have to lift State up!
+ 
+ * After
+ * Implement Modal.Bottom.Sheet (AppBar & Floating Action Button)
+ * + Need Trigger _addNewTransaction( ) here which trigger setState() inside it
+ * + Replace UserTransaction() by TransactionList() [which bring...
+ * ... _userTransactions=[] to main.dart too]
+ * All these thing need to reflect the UI so have to LIFT STATE UP!
  * 
- * IMPORTANT: Because _MyHomePageState is private Class to change all fuctions 
+ * IMPORTANT: Because _MyHomePageState is private Class so change all fuctions 
  * inside to private too (like _addNewTransaction())
  */
 ///
@@ -125,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   /** SOME NOTE ABOUT showModalBottomSheet **
-   * See [mbs folder]:
+   * See [mbs folder] + [Chapter 93]:
    * showModalBottomSheet.Container vs showModalBottomSheet.gestureDetecture
    * [NOTE]: 
    * Can get rid of SingleScrollView in new_transaction.dart by using here
