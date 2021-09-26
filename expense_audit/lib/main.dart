@@ -9,22 +9,15 @@ import './widgets/new_transaction.dart';
 import './widgets/chart.dart';
 import './widgets/transaction_list.dart';
 
-void main() {
-  /// Lock landscape-mode
-  // WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown,
-  // ]);
-  runApp(MyApp());
-}
+void main() => runApp(MyApp()); // See Chapter 123
 
 /// Keep MyApp to StatelessWiget to make sure AppBar not rebuild ///
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Personal Expenses',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
@@ -125,14 +118,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     });
   }
 
-  /** SOME NOTE ABOUT showModalBottomSheet **
+  void _startAddNewTransaction(BuildContext ctx) {
+    /** SOME NOTE ABOUT showModalBottomSheet **
    * See [mbs folder] + [Chapter 93]:
    * showModalBottomSheet.Container vs showModalBottomSheet.gestureDetecture
    * [NOTE]: 
    * Can get rid of SingleScrollView in new_transaction.dart by using here
    */
-  ///
-  void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         isScrollControlled: true,
@@ -167,10 +159,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         children: <Widget>[
           Text(
             'Show Chart',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.headline6, // See [Chapter 133]
           ),
-
-          /// StatefulWidget to use Switch | adaptive: adjust look base on platform
+          // See [Chapter 124 & 130]
           Switch.adaptive(
             activeColor: Theme.of(context).accentColor,
             value: _showChart,
@@ -214,12 +205,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               'Flutter App',
             ),
             trailing: Row(
-              /// (defaul) take all the width it can get
-              /// <> shrink along its main axis > not cover middle Text()
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min, //NOTE2 [Chapter 131]
               children: <Widget>[
-                //// IconButton require Material Widget ancestor
-                ///But in the end it in CupertinoPageScaffold
                 GestureDetector(
                   child: Icon(CupertinoIcons.add),
                   onTap: () => _startAddNewTransaction(context),
@@ -243,13 +230,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-
-    ///Check is orientation or not
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
-
-    /// For calculate height appBar
-    /// PreferredSizeWidget for determining which preferredSize using
-    final PreferredSizeWidget appBar = _buildAppBar();
+    final PreferredSizeWidget appBar = _buildAppBar(); // See [Chapter 131]
 
     final txListWidget = Container(
       height: (mediaQuery.size.height -
@@ -259,7 +241,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       child: TransactionList(_userTransactions, _deleteTransaction),
     );
 
-    /// SafeArea: not push down by respect to the navigation bar iOS
     final pageBody = SafeArea(
       child: SingleChildScrollView(
         child: Column(

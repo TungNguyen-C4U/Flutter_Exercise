@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expense_audit/widgets/adaptive_flat_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +47,7 @@ class _NewTransactionState extends State<NewTransaction> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020), //Can not go back to 2019
-      lastDate: DateTime.now(), //Can go to the future!
+      lastDate: DateTime.now(), //Can not go to the future!
     ).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -56,6 +58,14 @@ class _NewTransactionState extends State<NewTransaction> {
     });
   }
 
+  /** WHY USING SingleChildScrollView IN BOTTOM SHEET MODEL
+   * Soft-keyboard overlap it 
+   * padding.bottom + 10 to give us enough space for one TextField 
+   * *.viewInsets: How much space occupied view [by keyboard] + 10
+   * 
+   * See [Chapter 127] for better Solution
+   */
+  ///
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -66,7 +76,6 @@ class _NewTransactionState extends State<NewTransaction> {
             top: 10,
             left: 10,
             right: 10,
-            // How much space occupied by keyboard + 10
             bottom: MediaQuery.of(context).viewInsets.bottom + 10,
           ),
           child: Column(
@@ -77,7 +86,6 @@ class _NewTransactionState extends State<NewTransaction> {
              * TextField:
              * + onSubmitted: press 'Done' button == submit 
              * + onChanged  : fire every keystroke
-             * 
              */
             children: <Widget>[
               TextField(
@@ -106,13 +114,23 @@ class _NewTransactionState extends State<NewTransaction> {
                   ],
                 ),
               ),
-              RaisedButton(
-                child: Text('Add Transaction'),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button.color,
-                onPressed: _submitData,
-                // onPressed: () => addTx(___,___,), /// simple approach
-              ),
+              Platform.isIOS
+                  ? CupertinoButton(
+                      child: Text(
+                        'Add Transaction',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: _submitData,
+                    )
+                  : RaisedButton(
+                      child: Text('Add Transaction'),
+                      color: Theme.of(context).primaryColor,
+                      textColor: Theme.of(context).textTheme.button.color,
+                      onPressed: _submitData,
+                      // onPressed: () => addTx(___,___,), /// simple approach
+                    ),
             ],
           ),
         ),

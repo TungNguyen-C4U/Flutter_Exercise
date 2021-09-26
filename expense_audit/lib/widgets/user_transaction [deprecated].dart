@@ -48,7 +48,7 @@ class _UserTransactionsState extends State<UserTransactions> {
     return Column(
       children: <Widget>[
         /** [Chapter88] HOW WE CAN CALL PRIVATE _addNewTransaction( ) IN OTHER CLASS **
-         * _addNewTransaction is private BUT passing here is a pointer
+         * _addNewTransaction is private BUT passing here is a POINTER
           
          * => after triggerd by onPressed: _submitData by addTx() not re-render!
          * => BUT... (read in new_transaction.dart)

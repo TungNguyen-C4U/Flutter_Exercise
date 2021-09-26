@@ -19,11 +19,17 @@ class TransactionList extends StatelessWidget {
   final Function deleteTx;
 
   TransactionList(this.transactions, this.deleteTx);
-
+/** MANAGHE HEIGHT OF ENTIRE APP
+ * See [Chapter 114 and 120]
+ * MediaQuery v1.0: Define in both TransactionList and Chart
+ * MediaQuery v2.0: Define in main with deduct other components's size
+ */
+  ///
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300, // Chart can't reach (landscape-mode) [List take full height]
+      // height: 300,
+      // height: MediaQuery.of(context).size.height * 0.6,
       child: transactions.isEmpty
           ? LayoutBuilder(builder: (ctx, constraints) {
               return Column(
